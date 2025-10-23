@@ -1,0 +1,11 @@
+# OS
+Thumbs.db
+ehthumbs.db
+
+# Visual Studio / VSCode
+.vscode/
+*.code-workspace
+
+# Python
+__pycache__/
+*.pyc
