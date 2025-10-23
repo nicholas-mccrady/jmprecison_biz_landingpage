@@ -48,6 +48,12 @@ State Management Integration
    - Next actions
    - Project metadata
 
+Web project specifics
+- Main files to edit: `index.html` (content), `assets/css/styles.css` (styles), `assets/img` (images).
+- Quick preview: run `.\manage-state.ps1 -Action preview` to open `index.html` in your default browser.
+- Typical web next actions include editing copy in `index.html`, adjusting responsive CSS in `assets/css/styles.css`, and adding/optimizing images under `assets/img`.
+
+
 Detailed workflow (for future sessions)
 1. Start session
    - Check out current branch and workspace.

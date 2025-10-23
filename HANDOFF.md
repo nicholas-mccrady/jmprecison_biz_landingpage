@@ -11,6 +11,19 @@
 3. Read `WORKFLOW.md` for process documentation
 4. Check `session_activity_log.txt` for detailed history
 
+### Web quick-edit (immediate resume)
+1. Open the project folder and inspect `index.html` for content edits.
+2. Edit `assets/css/styles.css` for design changes.
+3. Add or replace images in `assets/img`.
+4. Preview locally:
+   ```powershell
+   .\manage-state.ps1 -Action preview
+   ```
+5. After making edits, record completion:
+   ```powershell
+   .\manage-state.ps1 -Action complete-task -TaskId "WEB-EDIT-<n>" -Description "Describe the change"
+   ```
+
 ### For Automated Systems
 1. Parse `state.json` for machine-readable project state
 2. Use REST endpoints (if implemented) or direct file access

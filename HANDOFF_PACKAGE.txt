@@ -1,0 +1,67 @@
+JMPRECISON BIZ LANDING PAGE - HANDOFF PACKAGE
+============================================
+
+Date: 2025-10-23
+
+This package contains everything needed for a human or automated agent to resume, maintain, or extend the landing page project without losing context or state.
+
+FILES TO HAND OFF:
+------------------
+- index.html                (main web page)
+- assets/css/styles.css     (main stylesheet)
+- assets/img/               (images directory)
+- state.json                (machine-readable project state)
+- session_activity_log.txt  (human-readable session log)
+- WORKFLOW.md               (step-by-step workflow)
+- HANDOFF.md                (quick start and continuity guide)
+- manage-state.ps1          (state management and automation script)
+
+HOW TO RESUME WORK (HUMAN):
+---------------------------
+1. Open a PowerShell terminal in the project root.
+2. Check current project state:
+   .\manage-state.ps1 -Action status
+3. See next web actions:
+   .\manage-state.ps1 -Action list-web-actions
+4. Edit files as needed (see next actions in state.json or status output).
+5. Preview changes locally:
+   .\manage-state.ps1 -Action preview
+6. After completing a task, record it:
+   .\manage-state.ps1 -Action complete-task -TaskId "WEB-EDIT-001" -Description "Describe your change"
+7. Commit and push changes as usual.
+
+HOW TO RESUME WORK (AUTOMATION):
+--------------------------------
+1. Parse state.json for nextActions and progress.
+2. Execute the highest-priority next action (edit, preview, etc.).
+3. Update state.json and session_activity_log.txt using manage-state.ps1.
+4. Commit changes to the repository.
+
+KEY FILES EXPLAINED:
+--------------------
+- state.json: Tracks project state, completed tasks, and next actions.
+- session_activity_log.txt: Chronological log of all major actions.
+- WORKFLOW.md: Full workflow and process documentation.
+- HANDOFF.md: Quick start, troubleshooting, and continuity procedures.
+- manage-state.ps1: PowerShell script for state management, preview, and automation.
+
+QUICK COMMANDS:
+---------------
+Check status:
+  .\manage-state.ps1 -Action status
+List next web actions:
+  .\manage-state.ps1 -Action list-web-actions
+Preview site:
+  .\manage-state.ps1 -Action preview
+Record a completed task:
+  .\manage-state.ps1 -Action complete-task -TaskId "WEB-EDIT-001" -Description "Describe your change"
+
+TROUBLESHOOTING:
+----------------
+- If you see errors, check state.json for corruption and restore from git if needed.
+- If PowerShell script fails, check execution policy:
+  Get-ExecutionPolicy -List
+  Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
+- For more, see HANDOFF.md and WORKFLOW.md.
+
+END OF HANDOFF PACKAGE

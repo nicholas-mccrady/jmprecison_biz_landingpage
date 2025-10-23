@@ -12,7 +12,33 @@ param(
 
 $STATE_FILE = "state.json"
 $LOG_FILE = "session_activity_log.txt"
-$WORKFLOW_FILE = "WORKFLOW.md"
+ $WEB_ROOT = Get-Location
+
+function Start-LocalPreview {
+    <#
+    Starts a local preview by opening index.html in the default browser.
+    Approved verb: Start
+    #>
+    $indexPath = Join-Path $WEB_ROOT "index.html"
+    if (Test-Path $indexPath) {
+        Start-Process $indexPath
+        Write-Host "Opened local preview: $indexPath" -ForegroundColor Cyan
+    } else {
+        Write-Host "index.html not found in current directory." -ForegroundColor Yellow
+    }
+}
+
+function Get-NextWebActions {
+    <#
+    Retrieves the next web-related actions from the project state.
+    Approved verb: Get
+    #>
+    $state = Get-ProjectState
+    Write-Host "Next web actions:" -ForegroundColor Cyan
+    $state.projectState.nextActions | Where-Object { $_.id -like 'WEB-*' } | ForEach-Object {
+        Write-Host "- [$($_.id)] $($_.description) (priority $($_.priority))"
+    }
+}
 
 function Get-ProjectState {
     if (Test-Path $STATE_FILE) {
@@ -33,31 +59,35 @@ function Update-ProjectState {
 
 function Add-TaskCompletion {
     param(
-        [Parameter(Mandatory=$true)]
-        [string]$Description,
-        [Parameter(Mandatory=$true)]
-        [string]$TaskId
+        [Parameter(Mandatory=$true)][string]$Description,
+        [Parameter(Mandatory=$true)][string]$TaskId,
+        [string]$ArtifactPath = ""
     )
-    
+
     $state = Get-ProjectState
-    $newTask = @{
+    $newTask = [PSCustomObject]@{
         id = $TaskId
         description = $Description
         timestamp = (Get-Date).ToUniversalTime().ToString("o")
-        artifact = ""
+        artifact = $null
     }
-    
+
+    if ($ArtifactPath) {
+        $newTask.artifact = $ArtifactPath
+    }
+
     $state.projectState.progress.completedTasks += $newTask
     $state.projectState.progress.lastAction = $Description
     Update-ProjectState $state
-    
-    # Also append to session log
+
+    # Also append to session log with artifact info
     $logEntry = @"
 
 Task Completion Entry:
 ID: $TaskId
 Description: $Description
 Time: $((Get-Date).ToUniversalTime().ToString("o"))
+Artifact: $ArtifactPath
 "@
     Add-Content $LOG_FILE $logEntry
 }
@@ -82,11 +112,13 @@ switch ($Action) {
     "status" { Show-ProjectStatus }
     "complete-task" { 
         if ($TaskId -and $Description) {
-            Add-TaskCompletion -TaskId $TaskId -Description $Description
+            Add-TaskCompletion -TaskId $TaskId -Description $Description -ArtifactPath ""
             Write-Host "Task $TaskId completed and recorded." -ForegroundColor Green
         } else {
             Write-Host "Error: TaskId and Description required for task completion" -ForegroundColor Red
         }
     }
+    "preview" { Start-LocalPreview }
+    "list-web-actions" { Get-NextWebActions }
     default { Write-Host "Unknown action. Use 'status' or 'complete-task'" -ForegroundColor Red }
 }

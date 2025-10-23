@@ -8,7 +8,7 @@
     },
     "workspaceStructure": {
       "root": "c:/Users/nick_/OneDrive - J & M Precision LLC/Documents/GitHub/jmprecison_biz_landingpage",
-      "mainFiles": ["index.html", "README.md", "WORKFLOW.md", "session_activity_log.txt", "state.json"],
+      "mainFiles": ["index.html", "assets/css/styles.css", "README.md", "WORKFLOW.md", "session_activity_log.txt", "state.json"],
       "directories": ["assets/css", "assets/img"]
     },
     "progress": {
@@ -27,20 +27,32 @@
           "artifact": "WORKFLOW.md"
         }
       ],
-      "currentState": "implementing-handoff-system"
+      "currentState": "web-landingpage-ready"
     },
     "nextActions": [
       {
-        "id": "HANDOFF-001",
-        "description": "Create automated state management script",
+        "id": "WEB-EDIT-001",
+        "description": "Edit `index.html` - update hero copy and contact link",
         "priority": 1,
-        "dependencies": ["state.json"]
+        "dependencies": ["index.html"]
       },
       {
-        "id": "HANDOFF-002",
-        "description": "Update workflow documentation with state management",
+        "id": "WEB-CSS-001",
+        "description": "Adjust styles in `assets/css/styles.css` for responsive layout",
         "priority": 2,
-        "dependencies": ["WORKFLOW.md", "state.json"]
+        "dependencies": ["assets/css/styles.css"]
+      },
+      {
+        "id": "WEB-ASSETS-001",
+        "description": "Add or optimize images in `assets/img`",
+        "priority": 3,
+        "dependencies": ["assets/img"]
+      },
+      {
+        "id": "WEB-PREVIEW-001",
+        "description": "Run local preview to verify changes",
+        "priority": 4,
+        "dependencies": ["index.html", "assets/css/styles.css"]
       }
     ]
   },
